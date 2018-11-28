@@ -1,0 +1,21 @@
+{
+  "name": "quadtree",
+  "version": "1.0.0",
+  "description": "quadtree-kokeilu",
+  "main": "index.js",
+  "author": "Paavo TL",
+  "license": "MIT",
+  "private": true,
+  
+  "scripts": {
+    "build": "webpack",
+    "start": "webpack-dev-server"
+  },
+  "dependencies": {
+    "webpack": "^4.26.1",
+    "webpack-dev-server": "^3.1.10"
+  },
+  "devDependencies": {
+    "webpack-cli": "^3.1.2"
+  }
+}
