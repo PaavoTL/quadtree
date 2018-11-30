@@ -90,10 +90,23 @@
 /*!*********************!*\
   !*** ./src/main.js ***!
   \*********************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-eval("class Engine {\r\n    constructor(){\r\n        document.body.style.margin = \"0px\";\r\n        document.body.style.overflow = \"hidden\";\r\n\r\n        this.canvas = document.createElement(\"canvas\");\r\n\r\n        this.canvas.width = window.innerWidth;\r\n        this.canvas.height = window.innerHeight;\r\n\r\n        document.body.appendChild(this.canvas);\r\n\r\n        this.ctx.fillStyle = \"#303030\";\r\n        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);\r\n    }\r\n}\r\n\r\nlet engine = new Engine;\n\n//# sourceURL=webpack:///./src/main.js?");
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _quadtree__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./quadtree */ \"./src/quadtree.js\");\n\r\n\r\n\r\n\r\nclass Engine {\r\n    constructor(){\r\n        document.body.style.margin = \"0px\";\r\n        document.body.style.overflow = \"hidden\";\r\n\r\n        this.canvas = document.createElement(\"canvas\");\r\n\r\n        this.canvas.width = window.innerWidth;\r\n        this.canvas.height = window.innerHeight;\r\n\r\n        document.body.appendChild(this.canvas);\r\n        this.ctx = this.canvas.getContext(\"2d\");\r\n\r\n        this.ctx.fillStyle = \"#303030\";\r\n        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);\r\n\r\n    }\r\n}\r\n\r\nlet engine = new Engine();\r\n\r\nlet boundary = new _quadtree__WEBPACK_IMPORTED_MODULE_0__[\"Rectangle\"]();\r\nlet qt = new _quadtree__WEBPACK_IMPORTED_MODULE_0__[\"QuadTree\"](boundary, 4);\r\n\r\nfor(let i = 0; i < 40; i++){\r\n    let p = new _quadtree__WEBPACK_IMPORTED_MODULE_0__[\"Point\"](Math.random(undefined.canvas.width),Math.random(undefined.canvas.height))\r\n    qt.insert(p)\r\n}\r\n\r\nconsole.log(qt);\r\n\r\n\n\n//# sourceURL=webpack:///./src/main.js?");
+
+/***/ }),
+
+/***/ "./src/quadtree.js":
+/*!*************************!*\
+  !*** ./src/quadtree.js ***!
+  \*************************/
+/*! exports provided: Point, Rectangle, QuadTree */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"Point\", function() { return Point; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"Rectangle\", function() { return Rectangle; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"QuadTree\", function() { return QuadTree; });\nclass Point {\r\n    constructor(x,y){\r\n        this.x = x;\r\n        this.y = y;\r\n    }\r\n}\r\n\r\nclass Rectangle {\r\n    constructor(x,y,w,h){\r\n        this.x = x;\r\n        this.y = y;\r\n        this.w = w;\r\n        this.h = h;\r\n    }\r\n\r\n    contains(point){\r\n        return (point.x > this.x - this.w &&\r\n            point.x < this.x + this.w &&\r\n            point.y > this.y - this.h &&\r\n            point.y < this.y + this.h);\r\n    }\r\n}\r\n\r\nclass QuadTree {\r\n    constructor(boundary,n) {\r\n        this.boundary = boundary;\r\n        this.capacity = n;\r\n        this.points = [];\r\n        this.divided = false;\r\n    }\r\n\r\n    subdivide(){\r\n        let x = this.boundary.x;\r\n        let y = this.boundary.y;\r\n        let w = this.boundary.w;\r\n        let h = this.boundary.h;\r\n\r\n        let nw = new Rectangle(x,y,w/2,h/2);\r\n        this.northWest = new QuadTree(nw, this.capacity);\r\n        let ne = new Rectangle(x+w/2,y,w/2,h/2);\r\n        this.northEast = new QuadTree(ne, this.capacity);\r\n        let sw = new Rectangle(x,y+h/2,w/2,h/2);\r\n        this.southWest = new QuadTree(sw, this.capacity);\r\n        let se = new Rectangle(x+w/2,y+h/2,w/2,h/2);\r\n        this.southEast = new QuadTree(se, this.capacity);\r\n        \r\n        this.divided = true;\r\n    }\r\n\r\n    insert(point) {\r\n        if (!this.boundary.contains(point)){\r\n            return;\r\n        }\r\n\r\n        if (this.points.length < this.capacity) {\r\n            this.points.push(point);\r\n\r\n        } else if (!this.divided) {\r\n            this.subdivide();\r\n        }\r\n\r\n        this.northWest.insert(point);\r\n        this.northEast.insert(point);\r\n        this.southWest.insert(point);\r\n        this.southEast.insert(point);\r\n    }\r\n}\n\n//# sourceURL=webpack:///./src/quadtree.js?");
 
 /***/ })
 
