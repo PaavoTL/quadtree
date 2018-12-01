@@ -55,14 +55,24 @@ export class QuadTree {
         let sw = new Rectangle(x,y+h/2,w/2,h/2);
         let se = new Rectangle(x+w/2,y+h/2,w/2,h/2);
         
-        this.northWest = new QuadTree(nw, this.capacity);
-        this.northEast = new QuadTree(ne, this.capacity);
-        this.southWest = new QuadTree(sw, this.capacity);
-        this.southEast = new QuadTree(se, this.capacity);
+        this.northWest = new QuadTree(nw, this.capacity+1);
+        this.northEast = new QuadTree(ne, this.capacity+1);
+        this.southWest = new QuadTree(sw, this.capacity+1);
+        this.southEast = new QuadTree(se, this.capacity+1);
         
         this.divs = [this.northWest,this.northEast,this.southWest,this.southEast];
         
         this.divided = true;
+        
+
+        for(let p of this.points){ 
+            Loop:
+            for (let div of this.divs){
+                if (div.insert(p)){break Loop;}
+            }
+        }
+
+        this.points = [];
     }
 
     insert(point) {
@@ -71,7 +81,7 @@ export class QuadTree {
             return false;
         }
 
-        if (this.points.length < this.capacity) {
+        if (this.points.length < this.capacity && !this.divided) {
             this.points.push(point);
         } else {
             if (!this.divided){
@@ -112,14 +122,9 @@ export class QuadTree {
     }
 
     check(){
-        if (!this.divided){
-            return;
+        if (this.divs.some(div => {return div.divided;})){
+            return true
         }
-        
-        this.northWest.check();
-        this.northEast.check();
-        this.southWest.check();
-        this.southEast.check();
 
         if (this.points.length + 
             this.northWest.points.length +
@@ -131,30 +136,36 @@ export class QuadTree {
                         this.points.push(point);
                     }
                 }
-                delete this.divs[0-3]
-                this.divided = false;
-            }
+            delete this.divs[0-3]
+            this.divided = false;
+            
+            return false;
+        } else {
+            return true;
+        }
     }
 
-    move(qTree, dt){
+    move(qTree, parent, dt){
         let count = 0
 
         for (let p of this.points){
             p.pmove(dt);
             
             if(!this.boundary.contains(p) && p.check){
-                qTree.insert(p);
+                qTree.insert(p);  
                 this.points.splice(count,1);
             }
-        
             count ++;
         }
+    }
 
-        if(this.divided){
-            this.northWest.move(qTree, dt);
-            this.northEast.move(qTree, dt);
-            this.southWest.move(qTree, dt);
-            this.southEast.move(qTree, dt);
+    update(qtree, parent, dt, points){
+        if (this.divided && this.check()){
+            for(let div of this.divs){
+                div.update(qtree, this, dt, points);
+            }
+        } else {
+            this.move(qtree, parent, dt);
         }
     }
 

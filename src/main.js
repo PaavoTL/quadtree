@@ -14,9 +14,10 @@ class Engine {
         this.ctx = this.canvas.getContext("2d");
 
         this.boundary = new Rectangle(0, 0, this.canvas.width, this.canvas.height);
-        this.qTree = new QuadTree(this.boundary, 4);
+        this.qTree = new QuadTree(this.boundary, 2);
         this.range = new Rectangle(-100, -100, 100, 100);
         this.points = [];
+        this.allPoints = [];
 
         this.time = performance.now();
         this.dt = 0;
@@ -47,7 +48,8 @@ class Engine {
 
         this.ctx.fillStyle = "green";
         this.font = "50px";
-        this.ctx.fillText(1/this.dt,10, 10)
+        this.ctx.fillText(1/this.dt,10, 10);
+        this.ctx.fillText(this.allPoints.length, 10, 20);
     }
 
     setup(){
@@ -63,11 +65,10 @@ class Engine {
         this.lastTime = this.time;
 
         this.setup();
-        this.qTree.move(this.qTree, this.dt);
-        this.qTree.check();
+        this.allPoints = [];
+        this.qTree.update(this.qTree, this.qTree, this.dt, this.points);
         
         this.points = this.qTree.query(this.range);
-        
         this.draw();
 
         window.requestAnimationFrame(this.loop.bind(this));
