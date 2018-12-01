@@ -2,13 +2,14 @@ export class Point {
     constructor(x,y,sx,sy){
         this.x = x;
         this.y = y;
-        this.xspeed = sx || Math.random() * 100;
-        this.yspeed = sy || Math.random() * 100;
+        this.xspeed = sx || (Math.random() - 0.5) * 100;
+        this.yspeed = sy || (Math.random() - 0.5) * 100;
         this.check = true;
     }
 
     pmove(dt){
         this.x += this.xspeed * dt;
+        this.y += this.yspeed * dt;
     }
 }
 
@@ -114,6 +115,7 @@ export class QuadTree {
         if (!this.divided){
             return;
         }
+        
         this.northWest.check();
         this.northEast.check();
         this.southWest.check();
@@ -123,7 +125,7 @@ export class QuadTree {
             this.northWest.points.length +
             this.northEast.points.length +
             this.southWest.points.length +
-            this.southEast.points.length < 5){
+            this.southEast.points.length <= this.capacity){
                 for(let div of this.divs){
                     for(let point of div.points){
                         this.points.push(point);
@@ -157,7 +159,7 @@ export class QuadTree {
     }
 
     show(ctx){
-        ctx.strokeStyle = "white";
+        ctx.strokeStyle = "#434343";
         ctx.strokeRect(this.boundary.x, this.boundary.y, this.boundary.w, this.boundary.h);
         if (this.divided){
             this.northWest.show(ctx);

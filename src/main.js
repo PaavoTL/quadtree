@@ -62,6 +62,7 @@ class Engine {
         this.dt = (this.time - this.lastTime) / 1000;
         this.lastTime = this.time;
 
+        this.setup();
         this.qTree.move(this.qTree, this.dt);
         this.qTree.check();
         
@@ -70,6 +71,7 @@ class Engine {
         this.draw();
 
         window.requestAnimationFrame(this.loop.bind(this));
+        
     }
 }
 
