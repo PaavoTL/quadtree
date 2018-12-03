@@ -22,9 +22,8 @@ class Engine {
     }
 
     setup(){
-        console.log("Hello")
-        for(let i = 0; i < 1; i++){
-            let p = new Point(random(this.canvas.width),random(this.canvas.height))
+        for(let i = 0; i < 100; i++){
+            let p = new Point(Math.random(this.canvas.width),Math.random(this.canvas.height))
             qt.insert(p)
         }
     }
@@ -32,6 +31,14 @@ class Engine {
 
 let engine = new Engine();
 
-let boundary = new Rectangle();
-let qt = new QuadTree(boundary, 4)
+let boundary = new Rectangle(0, 0, window.innerWidth, window.innerHeight);
+let qt = new QuadTree(boundary, 4);
+
+engine.setup();
+
+console.log(qt);
+console.log(engine.ctx);
+
+qt.show(engine.ctx);
+
 
