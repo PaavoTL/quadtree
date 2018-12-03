@@ -1,15 +1,14 @@
 export class Point {
-    constructor(x,y,sx,sy){
+    constructor(x,y,userData){
         this.x = x;
         this.y = y;
-        this.xspeed = sx || (Math.random() - 0.5) * 100;
-        this.yspeed = sy || (Math.random() - 0.5) * 100;
+        this.userData = userData;
         this.check = true;
     }
 
-    pmove(dt){
-        this.x += this.xspeed * dt;
-        this.y += this.yspeed * dt;
+    pmove(x,y){
+        this.x = x || this.x;
+        this.y = y || this.y;
     }
 }
 
@@ -33,6 +32,31 @@ export class Rectangle {
             range.x + range.w < this.x ||
             range.y > this.y + this.h ||
             range.y + range.h < this.y);
+    }
+}
+
+export class Circle {
+    constructor(x, y, r){
+        this.x = x;
+        this.y = y;
+        this.r = r;
+        this.rSquared = this.r * this.r
+    }
+
+    contains(point){
+        let d = Math.pow((point.x - this.x), 2) + Math.pow((point.y -this.y), 2);
+    }
+
+    intersects(range){
+        let xDixt = Math.abs(range.x - this.x);
+        let yDist = Math.abs(range.y - this.y);
+
+        let r = this.r;
+
+        let w = range.w;
+        let h = range.h;
+
+        var edges = Math.pow((xDist - w), 2) + Math.pow((yDist - h), 2);
     }
 }
 
@@ -149,9 +173,9 @@ export class QuadTree {
         let count = 0
 
         for (let p of this.points){
-            p.pmove(dt);
+            p.pmove();
             
-            if(!this.boundary.contains(p) && p.check){
+            if(!this.boundary.contains(p)){
                 qTree.insert(p);  
                 this.points.splice(count,1);
             }

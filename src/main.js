@@ -1,6 +1,11 @@
 import Engine from "./engine.js"
+import {Particle} from  "./objects.js"
 
-let engine = new Engine;
+let eng = new Engine;
+
+eng.update = (dt) => {
+    
+}
 
 // -|- functions -|-
 
@@ -13,15 +18,18 @@ function getMousePos(canvas, evt) {
 }
 
 function draw(event){
-    let mousePos = getMousePos(engine.canvas, event);
-    engine.makePoint(mousePos.x, mousePos.y);
+    let mousePos = getMousePos(eng.canvas, event);
+    
+    eng.makeParticle(mousePos.x, mousePos.y, 100)
+
+    // eng.makePoint(mousePos.x, mousePos.y);
 }
 
 function move(event){
-    let mousePos = getMousePos(engine.canvas, event);
-    engine.range.x = mousePos.x - engine.range.w / 2
-    engine.range.y = mousePos.y - engine.range.h / 2
+    let mousePos = getMousePos(eng.canvas, event);
+    eng.range.x = mousePos.x - eng.range.w / 2
+    eng.range.y = mousePos.y - eng.range.h / 2
 }
 
-engine.canvas.addEventListener("mousedown", draw);
-engine.canvas.addEventListener("mousemove", move);
+eng.canvas.addEventListener("mousedown", draw);
+eng.canvas.addEventListener("mousemove", move);
