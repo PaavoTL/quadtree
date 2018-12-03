@@ -6,12 +6,12 @@
   "author": "Paavo TL",
   "license": "MIT",
   "private": true,
-  
   "scripts": {
     "build": "webpack",
     "start": "webpack-dev-server"
   },
   "dependencies": {
+    "web-pack": "^1.0.0",
     "webpack": "^4.26.1",
     "webpack-dev-server": "^3.1.10"
   },
