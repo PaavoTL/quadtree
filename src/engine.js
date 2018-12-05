@@ -58,12 +58,15 @@ export default class Engine {
         //päivitys
         if(this.update) {this.update(this.dt);}
 
+
+
         for (let obj of this.objects){
             let points = this.qTree.query(obj.boundary);
             let others = [];
             for (let point of points){
                 others.push(point.userData)
             }
+            // console.log(others);
             obj.update(this.dt, others);
         }
         

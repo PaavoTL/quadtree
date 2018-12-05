@@ -45,10 +45,11 @@ export class Circle {
 
     contains(point){
         let d = Math.pow((point.x - this.x), 2) + Math.pow((point.y -this.y), 2);
+        return d <= this.rSquared;
     }
 
     intersects(range){
-        let xDixt = Math.abs(range.x - this.x);
+        let xDist = Math.abs(range.x - this.x);
         let yDist = Math.abs(range.y - this.y);
 
         let r = this.r;
@@ -56,7 +57,13 @@ export class Circle {
         let w = range.w;
         let h = range.h;
 
-        var edges = Math.pow((xDist - w), 2) + Math.pow((yDist - h), 2);
+        let edges = Math.pow((xDist - w), 2) + Math.pow((yDist - h), 2);
+
+        if (xDist > (r + w) || yDist > (r + h)) return false;
+
+        if (xDist <= w || yDist <= h) return true;
+
+        return edges <= this.rSquared;
     }
 }
 

@@ -14,17 +14,24 @@ export class Particle {
 
     intersects(other) {
         let a = this.x - other.x;
-        let d = dist(this.x, this.y, other.x, other.y);
-        return (d < this.r + other.r);
+        let b = this.y - other.y;
+
+        let d = Math.sqrt( (a*a + b*b));
+        return (d < (this.r + other.r) );
     }
 
     update(dt, others){
-        
+        let hit = false
+
         for (let other of others){
             if (other !== this && this.intersects(other)){
-                this.highLight = true; 
+                hit = true
+            }
+
+            if (hit){
+                this.highLight = true;
             } else {
-                this.highLight = false; 
+                this.highLight = false;
             }
         }
     }
