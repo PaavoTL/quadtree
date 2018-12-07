@@ -46,7 +46,8 @@ export default class Engine {
         for (let i = 0; i < n; i++){
             let x = Math.random()*this.canvas.width;
             let y = Math.random()*this.canvas.height;
-            this.makePoint(x,y);
+            let r = Math.random()*15 + 5;
+            this.makeParticle(x,y,r);
         }
     }
 
@@ -59,6 +60,9 @@ export default class Engine {
         if(this.update) {this.update(this.dt);}
 
 
+        for (let obj of this.objects){
+            obj.highLight = false;
+        }
 
         for (let obj of this.objects){
             let points = this.qTree.query(obj.boundary);
@@ -76,6 +80,7 @@ export default class Engine {
         
         this.draw();
 
+        // setTimeout(this.loop.bind(this), 300)
         window.requestAnimationFrame(this.loop.bind(this));   
     }
 
@@ -108,6 +113,6 @@ export default class Engine {
         this.font = "50px";
         
         this.ctx.fillText(1/this.dt,10, 10);
-        this.ctx.fillText(this.allPoints.length, 10, 20);
+        this.ctx.fillText(this.objects.length, 10, 20);
     }
 }

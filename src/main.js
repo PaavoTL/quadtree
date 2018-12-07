@@ -20,7 +20,8 @@ function getMousePos(canvas, evt) {
 function draw(event){
     let mousePos = getMousePos(eng.canvas, event);
     
-    eng.makeParticle(mousePos.x, mousePos.y, 100)
+    eng.makeParticle(mousePos.x, mousePos.y, Math.random()*15+5);
+    // eng.random(99);
 
     // eng.makePoint(mousePos.x, mousePos.y);
 }

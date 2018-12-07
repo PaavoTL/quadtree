@@ -7,8 +7,8 @@ export class Point {
     }
 
     pmove(x,y){
-        this.x = x || this.x;
-        this.y = y || this.y;
+        this.x = this.userData.x;
+        this.y = this.userData.y;
     }
 }
 
@@ -39,7 +39,7 @@ export class Circle {
     constructor(x, y, r){
         this.x = x;
         this.y = y;
-        this.r = r;
+        this.r = r*2;
         this.rSquared = this.r * this.r
     }
 
@@ -131,9 +131,10 @@ export class QuadTree {
             found = [];
         }
         
-        if(!this.boundary.intersects(range)){
+        if(!range.intersects(this.boundary)){
             // empty array
             return found;
+
         } else {
             for (let p of this.points){
                 if (range.contains(p)) {

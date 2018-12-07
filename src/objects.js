@@ -6,7 +6,7 @@ export class Particle {
     constructor(x,y,r){
         this.x = x;
         this.y = y;
-        this.r = 20;
+        this.r = r;
         this.highLight = false;
 
         this.boundary = new Circle(x,y,this.r);
@@ -16,24 +16,28 @@ export class Particle {
         let a = this.x - other.x;
         let b = this.y - other.y;
 
-        let d = Math.sqrt( (a*a + b*b));
-        return (d < (this.r + other.r) );
+        let d = Math.sqrt(a*a + b*b);
+        return (d < (this.r + other.r));
     }
 
     update(dt, others){
+        
         let hit = false
-
         for (let other of others){
             if (other !== this && this.intersects(other)){
-                hit = true
+                hit = true;
             }
 
             if (hit){
                 this.highLight = true;
-            } else {
-                this.highLight = false;
+                other.highLight = true;
             }
         }
+
+        this.x += (Math.random()-0.5);
+        this.y += (Math.random()-0.5);
+        this.boundary.x = this.x;
+        this.boundary.y = this.y;
     }
 
     show(ctx){
