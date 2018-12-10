@@ -23,6 +23,7 @@ export class Particle {
     update(dt, others){
         
         let hit = false
+        
         for (let other of others){
             if (other !== this && this.intersects(other)){
                 hit = true;
@@ -34,8 +35,8 @@ export class Particle {
             }
         }
 
-        this.x += (Math.random()-0.5);
-        this.y += (Math.random()-0.5);
+        this.x += (Math.random()-0.5)*1;
+        this.y += (Math.random()-0.5)*1;
         this.boundary.x = this.x;
         this.boundary.y = this.y;
     }
